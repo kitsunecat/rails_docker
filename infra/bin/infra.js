@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require("source-map-support/register");
+const cdk = require("@aws-cdk/core");
+const infra_stack_1 = require("../lib/infra-stack");
+const app = new cdk.App();
+new infra_stack_1.AwsCdkEcsOnFargateStack(app, "AwsCdkEcsOnFargateStack", {
+    env: { region: "ap-northeast-1" }
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5mcmEuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJpbmZyYS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFDQSx1Q0FBb0M7QUFDcEMscUNBQW9DO0FBQ3BDLG9EQUE0RDtBQUU1RCxNQUFNLEdBQUcsR0FBRyxJQUFJLEdBQUcsQ0FBQyxHQUFHLEVBQUUsQ0FBQTtBQUN6QixJQUFJLHFDQUF1QixDQUFDLEdBQUcsRUFBRSx5QkFBeUIsRUFBRTtJQUMxRCxHQUFHLEVBQUUsRUFBRSxNQUFNLEVBQUUsZ0JBQWdCLEVBQUU7Q0FDbEMsQ0FBQyxDQUFBIiwic291cmNlc0NvbnRlbnQiOlsiIyEvdXNyL2Jpbi9lbnYgbm9kZVxuaW1wb3J0IFwic291cmNlLW1hcC1zdXBwb3J0L3JlZ2lzdGVyXCJcbmltcG9ydCAqIGFzIGNkayBmcm9tIFwiQGF3cy1jZGsvY29yZVwiXG5pbXBvcnQgeyBBd3NDZGtFY3NPbkZhcmdhdGVTdGFjayB9IGZyb20gXCIuLi9saWIvaW5mcmEtc3RhY2tcIlxuXG5jb25zdCBhcHAgPSBuZXcgY2RrLkFwcCgpXG5uZXcgQXdzQ2RrRWNzT25GYXJnYXRlU3RhY2soYXBwLCBcIkF3c0Nka0Vjc09uRmFyZ2F0ZVN0YWNrXCIsIHtcbiAgZW52OiB7IHJlZ2lvbjogXCJhcC1ub3J0aGVhc3QtMVwiIH1cbn0pXG4iXX0=

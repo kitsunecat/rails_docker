@@ -1,22 +1,39 @@
 version: '3'
 
 services:
-  web:
-    build: .
+  nginx:
+    platform: linux/x86_64
+    build: ./nginx
+    volumes:
+      - public-data:/app_root/public
+      - tmp-data:/app_root/tmp
     ports:
-      - '3000:3000'
+      - 80:80
+    depends_on:
+      - rails
+  rails:
+    platform: linux/x86_64
+    build: ./rails
+    ports:
+      - 3000:3000
     volumes: 
-      - './backend:/usr/src/app'
+      - './rails:/app_root'
+      - public-data:/app_root/public
+      - tmp-data:/app_root/tmp
     tty: true
     stdin_open: true
-    command: bash -c "bundle install && rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: bash -c "bundle install && bundle exec rails db:create && bundle exec ridgepole --config ./config/database.yml --file ./db/schemafile.rb --apply && rm -f tmp/pids/server.pid && bundle exec rails server"
     depends_on: 
       - db
-
   db:
+    platform: linux/x86_64
     image: postgres:13
     volumes:
       - ./db:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
+
+volumes:
+  public-data:
+  tmp-data:
