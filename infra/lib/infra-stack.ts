@@ -9,6 +9,7 @@ import * as rds from "@aws-cdk/aws-rds"
 import * as logs from "@aws-cdk/aws-logs"
 import { v4 as uuid } from "uuid"
 import * as dotenv from "dotenv"
+import { Duration } from "@aws-cdk/core"
 
 dotenv.config()
 
@@ -193,7 +194,7 @@ export class AwsCdkEcsOnFargateStack extends cdk.Stack {
     cdk.Tags.of(albLogsBucket).add("Name", `${resoucePrefix}-alb-logs-bucket`)
 
     // lb, target group, service
-    const service = new ecs_patterns.ApplicationLoadBalancedFargateService(this, "service", {
+    let service = new ecs_patterns.ApplicationLoadBalancedFargateService(this, "service", {
       serviceName: `${resoucePrefix}-service`,
       cluster,
       taskDefinition,
@@ -201,10 +202,18 @@ export class AwsCdkEcsOnFargateStack extends cdk.Stack {
       minHealthyPercent: 100,
       maxHealthyPercent: 200,
       assignPublicIp: true,
+      healthCheckGracePeriod: cdk.Duration.seconds(300),
       publicLoadBalancer: true,
       securityGroups: [albSg, dbSg]
     })
     cdk.Tags.of(service).add("Name", `${resoucePrefix}-service`)
+    service.targetGroup.healthCheck = {
+      path: "/",
+      healthyHttpCodes: "200",
+      unhealthyThresholdCount: 5,
+      timeout: Duration.seconds(15),
+      interval: Duration.seconds(120),
+    }
 
     service.loadBalancer.logAccessLogs(albLogsBucket)
   }
