@@ -152,6 +152,7 @@ export class AwsCdkEcsOnFargateStack extends cdk.Stack {
           bundle install && \
           bundle exec ridgepole --config ./config/database.yml --file ./db/schemafile.rb -E production --apply && \
           rm -f tmp/pids/server.pid && \
+          bundle exec rails assets:precompile && \
           bundle exec rails server -e production \
         "
       ],
